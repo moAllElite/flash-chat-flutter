@@ -19,29 +19,8 @@ const messageContainerDecoration = BoxDecoration(
 );
 
 
-
-AlertDialog myAlertDialogue(
-    Widget widget,
-    { required BuildContext context ,
-      required Route route,
-      required String title,
-      required String message
-    }
-    ){
-  return AlertDialog.adaptive(
-    title: Text(title),
-    content: widget,
-    actions: [
-      TextButton(onPressed: (){
-        Navigator.of(context).push(route);
-      }
-          , child: Text(message)
-      )
-    ],
-    shape:const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-            Radius.circular(15.0)
-        )
-    ),
-  );
-}
+const animateKitTextStyle = TextStyle(
+fontSize: 45,
+fontWeight: FontWeight.w900,
+color: Colors.black54,
+);
