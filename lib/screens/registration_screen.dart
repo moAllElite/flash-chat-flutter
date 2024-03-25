@@ -7,11 +7,20 @@ class RegistrationScreen extends StatefulWidget {
   static String id= 'registration_screen';
   @override
   RegistrationScreenState createState() => RegistrationScreenState();
+
 }
 
 class RegistrationScreenState extends State<RegistrationScreen> {
+
+  bool passwordVisible = false;
+  @override
+  void initState() {
+     passwordVisible = true;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    var hauteur = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -34,49 +43,40 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 //Do something with the user input.
               },
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                contentPadding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent, width: 1.0),
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
-                  borderRadius: BorderRadius.circular(32.0),
+              decoration: kTextFieldDecoration.copyWith(
+                hintText:'Enter your email',
+                prefixIcon: const Icon(
+                  Icons.email,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+                height: hauteur / 25
             ),
             TextField(
               onChanged: (value) {
                 //Do something with the user input.
               },
-              decoration: kTextFieldDecoration, /*InputDecoration(
-                hintText: 'Enter yourpassword',
-                contentPadding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0),
+              obscureText: passwordVisible,
+              decoration: kTextFieldDecoration.copyWith(
+
+                prefixIcon: const Icon(
+                    Icons.lock
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent, width: 1.0),
-                  borderRadius: BorderRadius.circular(32.0),
+                suffixIcon:  IconButton(
+                    onPressed: (){
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                    icon: Icon(
+                        passwordVisible ? Icons.visibility :  Icons.visibility_off
+                    )
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-              ),*/
+              ),
             ),
-            const SizedBox(
-              height: 24.0,
+            SizedBox(
+                height: hauteur / 15
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),

@@ -26,13 +26,12 @@ const animateKitTextStyle = TextStyle(
 );
 
 var kTextFieldDecoration = InputDecoration(
-  hintStyle: TextStyle(
-    color: Colors.black54,
+  hintStyle: const TextStyle(color: Colors.black54),
+  hintText: 'Enter your password',
+  contentPadding: const EdgeInsets.symmetric(
+      vertical: 10.0,
+      horizontal: 20.0
   ),
-  hintText: 'Enter your email',
-  fillColor: Colors.black54,
-  contentPadding:
-   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(32.0),
   ),
