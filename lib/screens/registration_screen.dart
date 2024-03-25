@@ -1,3 +1,4 @@
+import 'package:chat/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 //Do something with the user input.
               },
-              decoration: InputDecoration(
+              decoration: kTextFieldDecoration, /*InputDecoration(
                 hintText: 'Enter yourpassword',
                 contentPadding:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -72,7 +73,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                   borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
                   borderRadius: BorderRadius.circular(32.0),
                 ),
-              ),
+              ),*/
             ),
             const SizedBox(
               height: 24.0,
