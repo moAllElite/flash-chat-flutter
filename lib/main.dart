@@ -12,15 +12,12 @@ class _FlashChat extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
-       // colorScheme: const ColorScheme.dark().copyWith(primary: Colors.black54),
-        hintColor:  Colors.black54,
-        primaryColor: Colors.black54,
-        textTheme:  TextTheme(
-          displayMedium:   theme.textTheme.displayMedium!.copyWith(
-            color: Colors.black54,
+        primaryColor: Colors.black,
+       /*textTheme:  const TextTheme(
+          displayMedium:   TextStyle(
+           color: Colors.black54,
           ),
-        ),
-
+        ),*/
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: WelcomeScreen.id,
@@ -34,5 +31,5 @@ class _FlashChat extends StatelessWidget {
   }
 
 
- 
+
 }

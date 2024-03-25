@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,6 +30,7 @@ class LoginScreenState extends State<LoginScreen> {
               height: 48.0,
             ),
             TextField(
+              style: const TextStyle(color: Colors.black54),
               onChanged: (value) {
                 //Do something with the user input.
               },
@@ -60,6 +60,7 @@ class LoginScreenState extends State<LoginScreen> {
               onChanged: (value) {
                 //Do something with the user input.
               },
+              style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 hintText: 'Enter your password.',
                 contentPadding:

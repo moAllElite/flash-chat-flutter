@@ -1,5 +1,4 @@
 import 'package:chat/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -43,6 +42,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 //Do something with the user input.
               },
+              style: const TextStyle(color: Colors.black),
               decoration: kTextFieldDecoration.copyWith(
                 hintText:'Enter your email',
                 prefixIcon: const Icon(
@@ -57,9 +57,9 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 //Do something with the user input.
               },
+              style: const TextStyle(color: Colors.black),
               obscureText: passwordVisible,
               decoration: kTextFieldDecoration.copyWith(
-
                 prefixIcon: const Icon(
                     Icons.lock
                 ),

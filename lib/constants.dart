@@ -26,7 +26,10 @@ const animateKitTextStyle = TextStyle(
 );
 
 var kTextFieldDecoration = InputDecoration(
-  hintStyle: const TextStyle(color: Colors.black54),
+  fillColor: Colors.black54,
+  hintStyle: const TextStyle(
+    color: Colors.black54,
+  ), // Set the desired color for hint text
   hintText: 'Enter your password',
   contentPadding: const EdgeInsets.symmetric(
       vertical: 10.0,
