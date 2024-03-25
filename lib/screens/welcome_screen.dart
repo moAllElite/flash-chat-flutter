@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 import '../constants.dart';
+import 'login_screen.dart';
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
 
@@ -83,7 +84,7 @@ class WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderS
                 title:  'Log In',
                 color: Colors.lightBlueAccent,
                 onPressed: () {
-                  Navigator.pushNamed(context, RegistrationScreen.id);
+                  Navigator.pushNamed(context, LoginScreen.id);
                 }
             ),
             RoundedButton(

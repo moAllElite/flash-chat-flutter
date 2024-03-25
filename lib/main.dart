@@ -9,16 +9,7 @@ void main() => runApp( _FlashChat());
 class _FlashChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.black,
-       /*textTheme:  const TextTheme(
-          displayMedium:   TextStyle(
-           color: Colors.black54,
-          ),
-        ),*/
-      ),
       debugShowCheckedModeBanner: false,
       initialRoute: WelcomeScreen.id,
       routes:{

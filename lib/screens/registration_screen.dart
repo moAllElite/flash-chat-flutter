@@ -1,3 +1,4 @@
+import 'package:chat/components/rounded_button.dart';
 import 'package:chat/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   bool passwordVisible = false;
   @override
   void initState() {
-     passwordVisible = true;
+    passwordVisible = true;
     super.initState();
   }
   @override
@@ -78,25 +79,13 @@ class RegistrationScreenState extends State<RegistrationScreen> {
             SizedBox(
                 height: hauteur / 15
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
+            RoundedButton(
+                title: 'Register',
                 color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement registration functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
+                onPressed: (){
+
+                }
+            )
           ],
         ),
       ),

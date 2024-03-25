@@ -22,14 +22,9 @@ const messageContainerDecoration = BoxDecoration(
 const animateKitTextStyle = TextStyle(
   fontSize: 45,
   fontWeight: FontWeight.w900,
-  color: Colors.black54,
 );
 
 var kTextFieldDecoration = InputDecoration(
-  fillColor: Colors.black54,
-  hintStyle: const TextStyle(
-    color: Colors.black54,
-  ), // Set the desired color for hint text
   hintText: 'Enter your password',
   contentPadding: const EdgeInsets.symmetric(
       vertical: 10.0,
@@ -47,3 +42,4 @@ var kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(32.0),
   ),
 );
+
