@@ -43,3 +43,11 @@ var kTextFieldDecoration = InputDecoration(
   ),
 );
 
+const errorIcon = Icon(
+  Icons.report_problem_outlined,
+  color: Colors.white,
+  size: 40.0,
+);
+const messageErrorStyle = TextStyle(
+  fontWeight: FontWeight.w600
+);

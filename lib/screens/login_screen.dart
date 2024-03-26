@@ -1,6 +1,10 @@
-import 'package:chat/components/rounded_button.dart';
-import 'package:flutter/material.dart';
 
+import 'package:chat/components/my_snack_bar.dart';
+import 'package:chat/components/rounded_button.dart';
+import 'package:chat/screens/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   bool passwordVisible = false;
+  late String email ;
+  late String password;
   @override
   void initState() {
     passwordVisible = true;
@@ -41,7 +47,7 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             TextField(
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
               keyboardType: TextInputType.emailAddress,
               decoration: kTextFieldDecoration.copyWith(
@@ -57,7 +63,7 @@ class LoginScreenState extends State<LoginScreen> {
             TextField(
               obscureText: passwordVisible,
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               style: const TextStyle(color: Colors.black),
               decoration:kTextFieldDecoration.copyWith(
@@ -82,12 +88,65 @@ class LoginScreenState extends State<LoginScreen> {
             RoundedButton(
                 title: 'Log in',
                 color: Colors.lightBlueAccent,
-                onPressed: (){
-
-                })
+                onPressed: () async {
+                    signIn(email, password, context);
+                }
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+
+
+void signIn(String email, String password, BuildContext context) async {
+  try {
+    final auth = FirebaseAuth.instance;//.instanceFor(app: Firebase.app());
+
+    final userCredential = await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    auth.authStateChanges().listen((User ? user) {
+      if(user == null){
+        print('l\'utilisateur est déconnecté');
+      }else{
+        // Si l'authentification est réussie, naviguez vers une nouvelle page.
+        Navigator.pushNamed(context, ChatScreen.id);
+        debugPrint('User is signed in!');
+      }
+    });
+
+  }on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found' && context.mounted) {
+      // Affichez une boîte de dialogue d'alerte si l'utilisateur n'est pas trouvé.
+        ScaffoldMessenger.of(context).showSnackBar(
+          MySnackBar(
+            backgroundColor: Colors.red,
+            message: 'L\'utilisateur avec l\'email fourni est introuvable ',
+          )
+        );
+
+    } else if (e.code == 'wrong-password' && context.mounted) {
+      debugPrint('Mot de passe incorrect pour cet utilisateur.');
+      ScaffoldMessenger.of(context).showSnackBar(
+          MySnackBar(
+            backgroundColor :Colors.red,
+            message: 'Mot de passe incorrect pour cet utilisateur.',
+          )
+      );
+    }else{
+      print(e.message);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+                  MySnackBar(
+                      backgroundColor: Colors.red,
+                      message:'${e.message}'
+                  )
+              );
+      }
+    }
   }
 }
