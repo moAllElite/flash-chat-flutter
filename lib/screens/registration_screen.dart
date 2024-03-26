@@ -1,7 +1,8 @@
 import 'package:chat/components/rounded_button.dart';
 import 'package:chat/constants.dart';
+import 'package:chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
   static String id= 'registration_screen';
@@ -11,11 +12,13 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class RegistrationScreenState extends State<RegistrationScreen> {
-
-  bool passwordVisible = false;
+  final  _auth = FirebaseAuth.instance;
+  late  String email;
+  late  String password;
+  bool passwordVisibility = false;
   @override
   void initState() {
-    passwordVisible = true;
+    passwordVisibility = true;
     super.initState();
   }
   @override
@@ -41,9 +44,9 @@ class RegistrationScreenState extends State<RegistrationScreen> {
             ),
             TextField(
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
-              style: const TextStyle(color: Colors.black),
+              keyboardType: TextInputType.emailAddress,
               decoration: kTextFieldDecoration.copyWith(
                 hintText:'Enter your email',
                 prefixIcon: const Icon(
@@ -56,10 +59,10 @@ class RegistrationScreenState extends State<RegistrationScreen> {
             ),
             TextField(
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               style: const TextStyle(color: Colors.black),
-              obscureText: passwordVisible,
+              obscureText: passwordVisibility,
               decoration: kTextFieldDecoration.copyWith(
                 prefixIcon: const Icon(
                     Icons.lock
@@ -67,11 +70,11 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                 suffixIcon:  IconButton(
                     onPressed: (){
                       setState(() {
-                        passwordVisible = !passwordVisible;
+                        passwordVisibility = !passwordVisibility;
                       });
                     },
                     icon: Icon(
-                        passwordVisible ? Icons.visibility :  Icons.visibility_off
+                        passwordVisibility ? Icons.visibility :  Icons.visibility_off
                     )
                 ),
               ),
@@ -82,8 +85,20 @@ class RegistrationScreenState extends State<RegistrationScreen> {
             RoundedButton(
                 title: 'Register',
                 color: Colors.blueAccent,
-                onPressed: (){
+                onPressed: () async{
+                   try {
+                     final newUser =  await _auth.createUserWithEmailAndPassword(
+                                             email: email,
+                                             password: password
+                     );
+                     if( newUser.user?.getIdToken() != null ){
+                       print(newUser.additionalUserInfo?.isNewUser);
+                       Navigator.pushNamed(context, ChatScreen.id);
 
+                     }
+                   } catch (e) {
+                     print(e);
+                   }
                 }
             )
           ],

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "600888225066",
+    "project_id": "flash-chat-d77ff",
+    "storage_bucket": "flash-chat-d77ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600888225066:android:bd22367b3fca2910e20253",
+        "android_client_info": {
+          "package_name": "com.moaAllElite.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3th5PGK4b5CInCpQCgDurnKw0NLSXQOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

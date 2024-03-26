@@ -1,10 +1,27 @@
+import 'dart:io';
+
 import 'package:chat/screens/chat_screen.dart';
 import 'package:chat/screens/login_screen.dart';
 import 'package:chat/screens/registration_screen.dart';
 import 'package:chat/screens/welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp( _FlashChat());
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  Platform.isAndroid?
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyD3th5PGK4b5CInCpQCgDurnKw0NLSXQOk",
+        appId: "1:600888225066:android:bd22367b3fca2910e20253",
+        messagingSenderId: "600888225066",
+        projectId:"flash-chat-d77ff"
+    )
+  ):
+  await Firebase.initializeApp();
+  runApp( _FlashChat());
+}
 
 class _FlashChat extends StatelessWidget {
   @override
