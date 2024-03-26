@@ -105,6 +105,9 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                        if( newUser.user?.getIdToken() != null && context.mounted){
                          Navigator.pushNamed(context, ChatScreen.id);
                        }
+                       setState(() {
+                         showSpinning = false;
+                       });
                      } on FirebaseAuthException catch (e) {
                        if(e.code =='weak-password' && context.mounted){
                           showAdaptiveDialog(
