@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat/constants/api_key.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:chat/screens/login_screen.dart';
 import 'package:chat/screens/registration_screen.dart';
@@ -11,7 +12,7 @@ Future<void> main() async{
   Platform.isAndroid?
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-        apiKey: "AIzaSyD3th5PGK4b5CInCpQCgDurnKw0NLSXQOk",
+        apiKey: apiKey,
         appId: "1:600888225066:android:bd22367b3fca2910e20253",
         messagingSenderId: "600888225066",
         projectId:"flash-chat-d77ff"
