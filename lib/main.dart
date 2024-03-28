@@ -1,11 +1,12 @@
 import 'dart:io';
-import 'package:chat/constants/api_key.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:chat/screens/login_screen.dart';
 import 'package:chat/screens/registration_screen.dart';
 import 'package:chat/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'api_key/api_key.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
