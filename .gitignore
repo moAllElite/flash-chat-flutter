@@ -1,3 +1,7 @@
+/android/app/google-services.json
+#API KEY
+/lib/constants/api_key.dart
+lib/constants/api_key.dart
 # Miscellaneous
 *.class
 *.log
@@ -41,7 +45,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/android/app/google-services.json
-#API KEY
-/lib/constants/api_key.dart
-**/constants/api_key.dart
