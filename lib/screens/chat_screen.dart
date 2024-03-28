@@ -135,9 +135,9 @@ class ChatScreenState extends State<ChatScreen> {
                       });
 
                     },
-                    child:  Text(
-                      'Send',
-                      style: sendButtonTextStyle,
+                    child: Icon(
+                      Icons.send,
+                      color: loginBtnColor,
                     ),
                   ),
                 ],
