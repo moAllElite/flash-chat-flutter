@@ -1,4 +1,5 @@
 /android/app/google-services.json
+*.json
 #API KEY
 /lib/constants/api_key.dart
 lib/constants/api_key.dart
