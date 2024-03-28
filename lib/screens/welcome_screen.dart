@@ -1,10 +1,11 @@
 
 import 'package:chat/components/rounded_button.dart';
+import 'package:chat/constants/custom_color.dart';
 import 'package:chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import '../constants.dart';
+import '../constants/constants.dart';
 import 'login_screen.dart';
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -28,7 +29,7 @@ class WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderS
     );
 
     animation = ColorTween(
-        begin: Colors.blueGrey,
+        begin: beginBackgroundColor,
         end: Colors.white
     ).animate(controller);
 
@@ -82,14 +83,14 @@ class WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderS
             ),
             RoundedButton(
                 title:  'Log In',
-                color: Colors.lightBlueAccent,
+                color: loginBtnColor,
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.id);
                 }
             ),
             RoundedButton(
                 title:'Register',
-                color: Colors.blueAccent,
+                color: registerBtnColor,
                 onPressed: () {
                   Navigator.pushNamed(context, RegistrationScreen.id);
                 }

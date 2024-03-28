@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-SnackBar  MySnackBar ({
+SnackBar  mySnackBar ({
   required  Color backgroundColor,
   required String message,
 }){

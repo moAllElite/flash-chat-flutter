@@ -1,11 +1,13 @@
-
+import 'package:chat/exceptions/auth_handler_exception.dart';
 import 'package:chat/components/my_snack_bar.dart';
 import 'package:chat/components/rounded_button.dart';
+import 'package:chat/constants/custom_color.dart';
+import 'package:chat/exceptions/auth_handler_exception.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../constants.dart';
+import '../constants/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id ='login_screen';
@@ -20,6 +22,7 @@ class LoginScreenState extends State<LoginScreen> {
   late String email ;
   late String password;
   bool showSpinning = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     passwordVisible = true;
@@ -33,47 +36,34 @@ class LoginScreenState extends State<LoginScreen> {
         email: email,
         password: password,
       );
+
       auth.authStateChanges().listen((User ? user) {
         if(user == null){
           debugPrint('l\'utilisateur est déconnecté');
         }else{
           // Si l'authentification est réussie, naviguez vers une nouvelle page.
+          setState(() {
+            showSpinning = false;
+          });
           Navigator.pushNamed(context, ChatScreen.id);
           debugPrint('User is signed in!');
-          setState(() {
-           showSpinning = false;
-          });
         }
       });
 
     }on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' && context.mounted) {
-        // Affichez une boîte de dialogue d'alerte si l'utilisateur n'est pas trouvé.
+      setState(() {
+        showSpinning = false;
+      });
+      var status = AuthHandlerException.handleAuthException(e);
+      var errorMessage  = AuthHandlerException.generateErrorMessage(status);
+      if (context.mounted) {
+        // Affichez une snack bar d'alerte en cas d'erreur.
         ScaffoldMessenger.of(context).showSnackBar(
-            MySnackBar(
+            mySnackBar(
               backgroundColor: Colors.red,
-              message: 'L\'utilisateur avec l\'email fourni est introuvable ',
+              message: errorMessage,
             )
         );
-
-      } else if (e.code == 'wrong-password' && context.mounted) {
-        debugPrint('Mot de passe incorrect pour cet utilisateur.');
-        ScaffoldMessenger.of(context).showSnackBar(
-            MySnackBar(
-              backgroundColor :Colors.red,
-              message: 'Mot de passe incorrect pour cet utilisateur.',
-            )
-        );
-      }else{
-        debugPrint(e.message);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              MySnackBar(
-                  backgroundColor: Colors.red,
-                  message:'${e.message}'
-              )
-          );
-        }
       }
     }
   }
@@ -84,70 +74,99 @@ class LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
         inAsyncCall: showSpinning,
-        child: Padding(
-          padding:const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: SizedBox(
-                  height: 200.0,
-                  child: Image.asset('images/logo.png'),
-                ),
-              ),
-              const SizedBox(
-                height: 48.0,
-              ),
-              TextField(
-                onChanged: (value) {
-                  email = value;
-                },
-                keyboardType: TextInputType.emailAddress,
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:'Enter your email',
-                  prefixIcon: const Icon(
-                    Icons.email,
+        progressIndicator: const CircularProgressIndicator(
+          color: Colors.lightBlue,
+        ),
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding:const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Hero(
+                  tag: 'logo',
+                  child: SizedBox(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: hauteur / 25,
-              ),
-              TextField(
-                obscureText: passwordVisible,
-                onChanged: (value) {
-                  password = value;
-                },
-                style: const TextStyle(color: Colors.black),
-                decoration:kTextFieldDecoration.copyWith(
-                  prefixIcon: const Icon(
-                      Icons.lock
+                const SizedBox(
+                  height: 48.0,
+                ),
+                TextFormField(
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  validator: ( value){
+                    if( value == null || value.isEmpty){
+                      return 'Le champs email est requis!!';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText:'Enter your email',
+                    prefixIcon: const Icon(
+                      Icons.email,
+                    ),
                   ),
-                  suffixIcon: IconButton(
-                      onPressed: (){
+                ),
+                SizedBox(
+                  height: hauteur / 25,
+                ),
+                TextFormField(
+                  obscureText: passwordVisible,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  // The validator receives the text that the user has entered
+                  validator: ( value){
+                    if( value == null || value.isEmpty){
+                      return 'Le champs mot de passe est requis!!';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(color: Colors.black),
+                  decoration:kTextFieldDecoration.copyWith(
+                    prefixIcon: const Icon(
+                        Icons.lock
+                    ),
+                    suffixIcon: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            passwordVisible = ! passwordVisible;
+                          });
+                        },
+                        icon: Icon(
+                            passwordVisible ? Icons.visibility :  Icons.visibility_off
+                        )
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height:  hauteur / 15,
+                ),
+                RoundedButton(
+                    title: 'Log in',
+                    color: loginBtnColor,
+                    onPressed: () async {
+                      if(_formKey.currentState!.validate()){
                         setState(() {
-                          passwordVisible = ! passwordVisible;
+                          showSpinning = true;
                         });
-                      },
-                      icon: Icon(
-                          passwordVisible ? Icons.visibility :  Icons.visibility_off
-                      )
-                  ),
+                        signIn(email, password, context);
+                      }else{
+                        mySnackBar(
+                            backgroundColor: Colors.red,
+                            message: 'Tous les champs sont obligatoires'
+                        );
+                      }
+                    }
                 ),
-              ),
-              SizedBox(
-                height:  hauteur / 15,
-              ),
-              RoundedButton(
-                  title: 'Log in',
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
-                      signIn(email, password, context);
-                  }
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

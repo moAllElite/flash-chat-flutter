@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chat/screens/chat_screen.dart';
 import 'package:chat/screens/login_screen.dart';
 import 'package:chat/screens/registration_screen.dart';

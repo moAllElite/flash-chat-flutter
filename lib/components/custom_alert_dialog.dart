@@ -6,9 +6,9 @@ class CustomAlertDialog extends StatelessWidget{
   final Icon icon;
   final String title;
   final String buttonName ;
+  final Color textColor;
 
-
-  const CustomAlertDialog({required this.message,required this.context,required this.icon,required this.title,required this.buttonName, super.key});
+  const CustomAlertDialog({required this.textColor,required this.message,required this.context,required this.icon,required this.title,required this.buttonName, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,13 @@ class CustomAlertDialog extends StatelessWidget{
         TextButton(onPressed: (){
           Navigator.of(context).pop(context);
         }
-            , child: Text(buttonName)
+            , child: Text(
+              buttonName,
+            style: TextStyle(
+              color: textColor,
+            ),
+            textAlign: TextAlign.center,
+            )
         )
       ],
       icon: icon,

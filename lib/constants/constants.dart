@@ -1,7 +1,8 @@
+import 'package:chat/constants/custom_color.dart';
 import 'package:flutter/material.dart';
 
-const sendButtonTextStyle = TextStyle(
-  color: Colors.lightBlueAccent,
+var sendButtonTextStyle = TextStyle(
+  color: loginBtnColor,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
@@ -12,9 +13,9 @@ const messageTextFieldDecoration = InputDecoration(
   border: InputBorder.none,
 );
 
-const messageContainerDecoration = BoxDecoration(
+var messageContainerDecoration = BoxDecoration(
   border: Border(
-    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    top: BorderSide(color: loginBtnColor, width: 2.0),
   ),
 );
 
@@ -30,24 +31,28 @@ var kTextFieldDecoration = InputDecoration(
       vertical: 10.0,
       horizontal: 20.0
   ),
+  errorStyle: const TextStyle(
+    fontSize: 16.0
+  ),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(32.0),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: const BorderSide(color: Colors.blueAccent, width: 1.0),
+    borderSide: BorderSide(color: loginBtnColor, width: 1.0),
     borderRadius: BorderRadius.circular(32.0),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+    borderSide:  BorderSide(color: loginBtnColor, width: 2.0),
     borderRadius: BorderRadius.circular(32.0),
   ),
 );
 
 const errorIcon = Icon(
   Icons.report_problem_outlined,
-  color: Colors.white,
-  size: 40.0,
+  color: Colors.red,
+  size: 70.0,
 );
 const messageErrorStyle = TextStyle(
-  fontWeight: FontWeight.w600
+  fontWeight: FontWeight.w600,
 );
+

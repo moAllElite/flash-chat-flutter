@@ -1,7 +1,9 @@
-import 'package:chat/constants.dart';
-import 'package:chat/screens/welcome_screen.dart';
+import 'package:chat/constants/constants.dart';
+import 'package:chat/constants/custom_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'login_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -13,6 +15,9 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
+  final _firestore = FirebaseFirestore.instance;
+  final db = FirebaseFirestore.instance;
+  late String textMessage;
   @override
   void initState() {
     super.initState();
@@ -22,34 +27,90 @@ class ChatScreenState extends State<ChatScreen> {
     try {
       final  user =  _auth.currentUser;
       if(user != null){
-            loggedInUser = user;
-          }
-    } catch (e) {
-      print(e);
+        loggedInUser = user;
+      }
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
     }
   }
+/*  void getMessages()async{
+    final messages = await _firestore.collection('messages').get().then(
+            (messages) {
+              for(var message in messages.docs){
+                debugPrint('${message.data()}');
+              }
+            });
+  }*/
+  void signOut() async{
+    await FirebaseAuth.instance.signOut();
+    if(mounted) Navigator.of(context).pushNamed(LoginScreen.id);
+  }
+
+  void messagesStream () async{
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for(var message in snapshot.docs){
+        debugPrint('${message.id} => ${message.data()}');
+      }
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //leading: null,,
+        leading: Hero(
+          tag: 'logo',
+          child: IconButton(
+            onPressed: ()async => signOut(),
+            icon: const Icon(Icons.arrow_back_outlined,color: Colors.white,),
+          ),
+        ),
         actions: <Widget>[
           IconButton(
-              icon: const Icon(Icons.close),
+              icon: const Icon(Icons.close,color: Colors.white,),
               onPressed: () async{
-                //Implement logout functionality
-               final isLogout = await FirebaseAuth.instance.signOut();
-                Navigator.pushNamed(context, WelcomeScreen.id);
+                messagesStream();
+                //signOut();
               }),
         ],
-        title: const Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        title:  const Text('⚡️Chat',style: TextStyle(color:Colors.white),),
+        backgroundColor: loginBtnColor,
       ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, snapshot)  {
+                List<Text> messagesWidgets = [];
+                if(!snapshot.hasData){
+                  return  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: const CircularProgressIndicator(
+                        backgroundColor: Colors.lightBlueAccent,
+                      ),
+                    ),
+                  );
+                }
+                final messages = snapshot.data!.docs.reversed;
+                for (var message in messages){
+                  final messageText = message.get('text');
+                  final messageSender = message.get('sender');
+                  final messageWidget = Text(
+                    "$messageText from $messageSender",
+                  );
+                  messagesWidgets.add(messageWidget);
+                }
+
+                return Column(
+                  children: messagesWidgets,
+                );
+              },
+            ),
             Container(
               decoration: messageContainerDecoration,
               child: Row(
@@ -58,7 +119,7 @@ class ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //Do something with the user input.
+                        textMessage = value;
                       },
                       decoration: messageTextFieldDecoration,
                     ),
@@ -66,8 +127,15 @@ class ChatScreenState extends State<ChatScreen> {
                   TextButton(
                     onPressed: () {
                       //Implement send functionality.
+
+                      _firestore.collection('messages')
+                          .add({
+                        'text':textMessage,
+                        'sender':loggedInUser.email,
+                      });
+
                     },
-                    child: const Text(
+                    child:  Text(
                       'Send',
                       style: sendButtonTextStyle,
                     ),
