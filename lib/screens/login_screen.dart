@@ -17,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  bool isEmailEmpty = false;
+  bool isPasswordEmpty = false;
   bool passwordVisible = false;
   late String email ;
   late String password;
@@ -25,7 +27,12 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     passwordVisible = true;
+    isEmailEmpty = false;
+    isEmailEmpty = false;
     super.initState();
+  }
+  Color iconColor(bool errorFound){
+    return errorFound == true ? Colors.redAccent.shade700: Colors.grey.shade800;
   }
   void signIn(String email, String password, BuildContext context) async {
     try {
@@ -100,15 +107,23 @@ class LoginScreenState extends State<LoginScreen> {
                   },
                   validator: ( value){
                     if( value == null || value.isEmpty){
+                      setState(() {
+                        isEmailEmpty = true;
+                      });
                       return 'Le champs email est requis!!';
+                    }else{
+                      setState(() {
+                        isEmailEmpty = false;
+                      });
                     }
                     return null;
                   },
                   keyboardType: TextInputType.emailAddress,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText:'Enter your email',
-                    prefixIcon: const Icon(
+                    prefixIcon:  Icon(
                       Icons.email,
+                      color: iconColor(isEmailEmpty),
                     ),
                   ),
                 ),
@@ -123,14 +138,22 @@ class LoginScreenState extends State<LoginScreen> {
                   // The validator receives the text that the user has entered
                   validator: ( value){
                     if( value == null || value.isEmpty){
+                      setState(() {
+                        isPasswordEmpty = true;
+                      });
                       return 'Le champs mot de passe est requis!!';
+                    }else{
+                      setState(() {
+                        isPasswordEmpty = false;
+                      });
                     }
                     return null;
                   },
                   style: const TextStyle(color: Colors.black),
                   decoration:kTextFieldDecoration.copyWith(
-                    prefixIcon: const Icon(
-                        Icons.lock
+                    prefixIcon:  Icon(
+                        Icons.lock,
+                      color:iconColor(isPasswordEmpty),
                     ),
                     suffixIcon: IconButton(
                         onPressed: (){
@@ -151,6 +174,7 @@ class LoginScreenState extends State<LoginScreen> {
                     title: 'Log in',
                     color: loginBtnColor,
                     onPressed: () async {
+
                       if(_formKey.currentState!.validate()){
                         setState(() {
                           showSpinning = true;
@@ -161,6 +185,8 @@ class LoginScreenState extends State<LoginScreen> {
                             backgroundColor: Colors.red,
                             message: 'Tous les champs sont obligatoires'
                         );
+
+                        print( "as $isPasswordEmpty $isEmailEmpty");
                       }
                     }
                 ),
