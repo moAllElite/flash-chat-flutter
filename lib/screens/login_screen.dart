@@ -2,7 +2,6 @@ import 'package:chat/exceptions/auth_handler_exception.dart';
 import 'package:chat/components/my_snack_bar.dart';
 import 'package:chat/components/rounded_button.dart';
 import 'package:chat/constants/custom_color.dart';
-import 'package:chat/exceptions/auth_handler_exception.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
