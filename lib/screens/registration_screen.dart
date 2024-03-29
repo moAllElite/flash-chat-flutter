@@ -1,9 +1,12 @@
 import 'package:chat/components/custom_alert_dialog.dart';
+import 'package:chat/components/my_snack_bar.dart';
 import 'package:chat/components/rounded_button.dart';
 import 'package:chat/constants/constants.dart';
 import 'package:chat/constants/custom_color.dart';
 import 'package:chat/exceptions/auth_handler_exception.dart';
 import 'package:chat/screens/chat_screen.dart';
+import 'package:chat/screens/login_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -17,8 +20,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class RegistrationScreenState extends State<RegistrationScreen> {
   final  _auth = FirebaseAuth.instance;
-  late  String email;
-  late  String password;
+  late String email;
+  late String password;
   final _formRegKey = GlobalKey<FormState>();
   bool passwordVisibility = false;
   bool showSpinning = false;
@@ -46,11 +49,13 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    height: 200.0,
-                    child: Image.asset('images/logo.png'),
+                Flexible(
+                  child: Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 200.0,
+                      child: Image.asset('images/logo.png'),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -61,7 +66,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     email = value;
                   },
                   validator: (value){
-                    (value == null || value.isEmpty) ? 'L\'email est requis':null;
+                   if (value == null || value.isEmpty) return 'L\'email est requis';
                     return null;
                   },
                   keyboardType: TextInputType.emailAddress,
@@ -80,9 +85,10 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     password = value;
                   },
                   validator: (value){
-                    (value == null || value.isEmpty) ? 'Le mot de passe est requis':null;
+                    if ( value == null || value.isEmpty) {
+                      return 'Le mot de passe est requis';
+                    }
                     return null;
-
                   },
                   style: const TextStyle(color: Colors.black),
                   obscureText: passwordVisibility,
@@ -109,21 +115,24 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     title: 'Register',
                     color: registerBtnColor,
                     onPressed: () async{
-                      setState(() {
-                        showSpinning = true;
-                      });
                        try {
-                         final newUser =  await _auth.createUserWithEmailAndPassword(
-                                                 email: email,
-                                                 password: password
-                         );
-                         if( newUser.user?.getIdToken() != null && context.mounted){
-                           Navigator.pushNamed(context, ChatScreen.id);
-                           setState(() {
-                             showSpinning = false;
-                           });
+                         if (_formRegKey.currentState!.validate() ) {
+                           final newUser =  await _auth.createUserWithEmailAndPassword(
+                                                                            email: email,
+                                                                            password: password
+                                                    );
+                           if( newUser.user?.getIdToken() != null && context.mounted){
+                             setState(() {
+                               showSpinning = false;
+                             });
+                             Navigator.pushNamed(context, ChatScreen.id);
+                           }
+                         }else{
+                           ScaffoldMessenger.of(context).showSnackBar(
+                               mySnackBar(backgroundColor: Colors.red, message: 'Tous les champs sont obligatoire')
+                           );
                          }
-
+        
                        } on FirebaseAuthException catch (e) {
                          setState(() {
                            showSpinning = false;
@@ -147,7 +156,22 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                          }
                        }
                     }
+                ),
+                const SizedBox(
+                  height: 6.0,
+                ),
+                TextButton(onPressed: (){
+                  Navigator.pushNamed(context, LoginScreen.id);
+                }
+                    , child: Text(
+                        'Vous avez un compte?',
+                      style: TextStyle(
+                        color: registerBtnColor,
+                        fontSize: 16.0,
+                      ),
+                    )
                 )
+        
               ],
             ),
           ),

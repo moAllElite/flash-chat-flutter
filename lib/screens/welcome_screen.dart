@@ -83,7 +83,7 @@ class WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderS
             ),
             RoundedButton(
                 title:  'Log In',
-                color: loginBtnColor,
+                color: isGreenColor,
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.id);
                 }

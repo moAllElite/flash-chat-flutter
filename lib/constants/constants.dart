@@ -2,7 +2,7 @@ import 'package:chat/constants/custom_color.dart';
 import 'package:flutter/material.dart';
 
 var sendButtonTextStyle = TextStyle(
-  color: loginBtnColor,
+  color: isGreenColor,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
@@ -15,7 +15,7 @@ const messageTextFieldDecoration = InputDecoration(
 
 var messageContainerDecoration = BoxDecoration(
   border: Border(
-    top: BorderSide(color: loginBtnColor, width: 2.0),
+    top: BorderSide(color: isGreenColor, width: 2.0),
   ),
 );
 
@@ -38,11 +38,11 @@ var kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(32.0),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: loginBtnColor, width: 1.0),
+    borderSide: BorderSide(color: isGreenColor, width: 1.0),
     borderRadius: BorderRadius.circular(32.0),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide:  BorderSide(color: loginBtnColor, width: 2.0),
+    borderSide:  BorderSide(color: isGreenColor, width: 2.0),
     borderRadius: BorderRadius.circular(32.0),
   ),
 );

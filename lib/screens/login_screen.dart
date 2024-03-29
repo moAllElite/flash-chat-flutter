@@ -44,13 +44,13 @@ class LoginScreenState extends State<LoginScreen> {
       );
 
       auth.authStateChanges().listen((User ? user) {
+        setState(() {
+          showSpinning = false;
+        });
         if(user == null){
           debugPrint('l\'utilisateur est déconnecté');
         }else{
           // Si l'authentification est réussie, naviguez vers une nouvelle page.
-          setState(() {
-            showSpinning = false;
-          });
           Navigator.pushNamed(context, ChatScreen.id);
           debugPrint('User is signed in!');
         }
@@ -91,11 +91,13 @@ class LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    height: 200.0,
-                    child: Image.asset('images/logo.png'),
+                Flexible(
+                  child: Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 200.0,
+                      child: Image.asset('images/logo.png'),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -172,7 +174,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
                 RoundedButton(
                     title: 'Log in',
-                    color: loginBtnColor,
+                    color: isGreenColor,
                     onPressed: () async {
 
                       if(_formKey.currentState!.validate()){

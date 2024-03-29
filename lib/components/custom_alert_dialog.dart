@@ -14,19 +14,29 @@ class CustomAlertDialog extends StatelessWidget{
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
       title: Text(title,textAlign: TextAlign.center,),
-      content: Text(message),
+      content: Text(message,
+        textAlign: TextAlign.center,
+        style:  const TextStyle(
+          color: Colors.red,
+          fontSize: 16.0,
+          fontWeight: FontWeight.w400
+        ),
+      ),
       actions: [
-        TextButton(onPressed: (){
-          Navigator.of(context).pop(context);
-        }
-            , child: Text(
-              buttonName,
-            style: TextStyle(
-              color: textColor,
-            ),
-            textAlign: TextAlign.center,
-            )
-        )
+        Center(
+          child: TextButton(
+              onPressed: (){
+            Navigator.of(context).pop(context);
+          }
+              , child: Text(
+                buttonName,
+              style: TextStyle(
+                color: textColor,
+              ),
+              textAlign: TextAlign.center,
+              )
+          ),
+        ),
       ],
       icon: icon,
       shape: const RoundedRectangleBorder(

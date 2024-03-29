@@ -10,7 +10,7 @@ Color hexStringToColor(String hexColor) {
 }
 
 Color registerBtnColor = hexStringToColor("#344D59");
-Color loginBtnColor = hexStringToColor("#137C8B");
+Color isGreenColor = hexStringToColor("#137C8B");
 Color beginBackgroundColor = hexStringToColor("#709CA7");
 Color gridcolor = hexStringToColor("#344D59");
 Color cardColor = hexStringToColor("#B8CBD0");

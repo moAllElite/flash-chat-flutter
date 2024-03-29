@@ -5,6 +5,7 @@ SnackBar  mySnackBar ({
 }){
   return  SnackBar(
     elevation: 10.0,
+    duration: const Duration(seconds: 2),
     content: Row(
       children: [
         const Icon(
